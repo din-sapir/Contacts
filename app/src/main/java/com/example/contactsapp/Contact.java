@@ -1,20 +1,22 @@
 package com.example.contactsapp;
 
+import android.net.Uri;
+
 import java.io.Serializable;
 
 public class Contact implements Serializable {
 
-    private int Avatar;
+    private String Avatar;
     private String Name;
     private String Email;
 
-    public Contact(int avatar, String name, String email) {
-        Avatar = avatar;
+    public Contact(Uri avatar, String name, String email) {
+        Avatar = String.valueOf(avatar);
         Name = name;
         Email = email;
     }
 
-    public int getAvatar() {
+    public String getAvatar() {
         return Avatar;
     }
 

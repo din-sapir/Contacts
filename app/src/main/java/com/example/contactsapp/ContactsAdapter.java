@@ -2,6 +2,7 @@ package com.example.contactsapp;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +20,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactViewHolder> {
 
     public ContactsAdapter() {
         contacts = new ArrayList<>();
-        contacts.add(new Contact(R.drawable.avatar1, "Contact 1", "Contact1@gmail.com"));
-        contacts.add(new Contact(R.drawable.avatar2, "Contact 2", "Contact2@gmail.com"));
-        contacts.add(new Contact(R.drawable.avatar3, "Contact 3", "Contact3@gmail.com"));
-        contacts.add(new Contact(R.drawable.avatar4, "Contact 4", "Contact4@gmail.com"));
-        contacts.add(new Contact(R.drawable.avatar5, "Contact 5", "Contact5@gmail.com"));
-        contacts.add(new Contact(R.drawable.avatar6, "Contact 6", "Contact6@gmail.com"));
-        contacts.add(new Contact(R.drawable.avatar7, "Contact 7", "Contact7@gmail.com"));
-        contacts.add(new Contact(R.drawable.avatar8, "Contact 8", "Contact8@gmail.com"));
     }
 
     @NonNull
@@ -42,7 +35,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactViewHolder> {
         Contact contact = contacts.get(position);
         holder.tv_name.setText(contact.getName());
         holder.tv_email.setText(contact.getEmail());
-        holder.avatar.setImageResource(contact.getAvatar());
+        holder.avatar.setImageURI(Uri.parse(contact.getAvatar()));
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
