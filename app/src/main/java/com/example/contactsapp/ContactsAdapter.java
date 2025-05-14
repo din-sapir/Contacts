@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.EventListener;
@@ -71,7 +72,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactViewHolder> {
         Contact contact = contacts.get(position);
         holder.tv_name.setText(contact.getName());
         holder.tv_email.setText(contact.getEmail());
-        holder.avatar.setImageURI(Uri.parse(contact.getAvatar()));
+        //holder.avatar.setImageURI(Uri.parse(contact.getAvatar()));
+        Glide.with(holder.avatar).load(contact.getAvatar()).into(holder.avatar);
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
