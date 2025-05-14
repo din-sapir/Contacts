@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent data = result.getData();
                         Bundle bundle = data.getExtras();
                         Contact contact = (Contact) bundle.getSerializable("contact");
-                        adapter.addContact(contact);
+                        //adapter.addContact(contact);
                         //handleData(data);
                     }
                 }

@@ -8,18 +8,54 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactViewHolder> {
 
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     private List<Contact> contacts;
 
     public ContactsAdapter() {
         contacts = new ArrayList<>();
+        db.collection("Contacts").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    contacts.clear();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Contact c = new Contact(document.get("Avatar").toString(), document.get("Name").toString(), document.get("Email").toString(), document.get("ID").toString());
+                        contacts.add(c);
+                    }
+                    notifyDataSetChanged();
+                }
+            }
+
+        });
+        db.collection("Contacts").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                contacts.clear();
+                for (QueryDocumentSnapshot document : value) {
+                    Contact c = new Contact(document.get("Avatar").toString(), document.get("Name").toString(), document.get("Email").toString(), document.get("ID").toString());
+                    contacts.add(c);
+                }
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @NonNull
@@ -62,7 +98,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactViewHolder> {
     }
 
     public void deleteContact(int pos) {
-        contacts.remove(pos);
-        notifyDataSetChanged();
+        Contact c = contacts.get(pos);
+        db.collection("Contacts").document(c.getID()).delete();
     }
 }

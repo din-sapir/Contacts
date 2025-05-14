@@ -26,8 +26,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.Firebase;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class AddContactActivity extends AppCompatActivity {
 
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     int REQUEST_PERMISSIONS_CODE = 1;
     ImageView addPhoto;
     private ActivityResultLauncher<Uri> takePictureLauncher;
@@ -74,7 +78,8 @@ public class AddContactActivity extends AppCompatActivity {
             public void onClick(View v) {
                 EditText et_name = findViewById(R.id.et_name);
                 EditText et_email = findViewById(R.id.et_email);
-                Contact c = new Contact(CurrentImage,et_name.getText().toString(),et_email.getText().toString());
+                Contact c = new Contact(String.valueOf(CurrentImage),et_name.getText().toString(),et_email.getText().toString());
+                db.collection("Contacts").document(c.getID()).set(c.getAsMap());
                 Intent i = new Intent();
                 i.putExtra("contact",c);
                 setResult(1,i);
